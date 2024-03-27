@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -28,4 +29,5 @@ public class UserAccount {
 
     private Boolean isDeleted;
     private LocalDateTime createdAt;
+
 }

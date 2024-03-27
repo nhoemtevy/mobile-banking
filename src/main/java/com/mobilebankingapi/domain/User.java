@@ -38,7 +38,7 @@ public class User {
 
     private String student_card_id;
 
-    @OneToMany()
-    private List<Account> accounts;
+    @OneToMany(mappedBy = "user")
+    private List<UserAccount> userAccountList;
 
 }
