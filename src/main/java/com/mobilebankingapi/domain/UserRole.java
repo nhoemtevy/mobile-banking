@@ -1,13 +1,11 @@
 package com.mobilebankingapi.domain;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -15,21 +13,16 @@ import java.util.List;
 @Data
 @Setter
 @Getter
-@Table(name = "user_account")
-public class UserAccount {
+@Table(name = "user_role")
+public class UserRole {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Role role;
 
-    @ManyToOne
-    private Account account;
-
-    private Boolean isDeleted;
-    private LocalDateTime createdAt;
-
-    @ManyToOne
-    private UserRole userRole;
+    @OneToMany(mappedBy = "userRole")
+    private List<UserAccount> userRole;
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -38,4 +39,7 @@ public class Transaction {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "transaction")
+    private List<Notification> notifications;
 }

@@ -41,4 +41,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserAccount> userAccountList;
 
+    @OneToMany(mappedBy = "sender")
+    private List<Notification> sender;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<Notification> receiver;
+
 }
