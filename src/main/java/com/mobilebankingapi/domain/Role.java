@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Entity
 @Data
@@ -22,6 +24,10 @@ public class Role {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @OneToOne
-    private RoleAuthorities roleAuthorities;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
+
+    @ManyToMany
+    private List<Authority> authorities;
+
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Setter
 @Getter
-@Table(name = "user_account")
+@Table(name = "user_accounts")
 public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,6 @@ public class UserAccount {
     private Account account;
 
     private Boolean isDeleted;
+    private Boolean isBlocked;
     private LocalDateTime createdAt;
-
-    @ManyToOne
-    private UserRole userRole;
 }

@@ -15,31 +15,35 @@ import java.util.List;
 @Data
 @Setter
 @Getter
-@Table(name = "transaction")
+@Table(name = "transactions")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private Account sender;
+    private Account owner;
+
+    @ManyToOne
+    private Account transferReceiver; // uses when transaction type is TRANSFER
+
+    private String paymentReceiver;
 
     private BigDecimal amount;
 
+    @Column(columnDefinition = "TEXT")
     private String remark;
 
-    @ManyToOne
-    private Account receiver;
+    @Column(nullable = false, length = 30)
+    private String transactionType; // transfer and payment
 
-    private Boolean isPayment;
+    private Boolean status; // Pending, Completed, Failed
 
-    private LocalDateTime transaction;
+    private LocalDateTime transactionAt;
 
     private Boolean isDeleted;
 
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "transaction")
-    private List<Notification> notifications;
 }

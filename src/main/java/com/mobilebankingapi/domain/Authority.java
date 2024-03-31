@@ -1,25 +1,27 @@
 package com.mobilebankingapi.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@Entity
-@Data
-@Setter
-@Getter
-@Table(name = "role_authorities")
-public class RoleAuthorities {
+import java.util.List;
 
+
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "authorities")
+
+public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
+    private String name;
 
-
-
+    @ManyToMany(mappedBy = "authorities")
+    private List<Role> roles;
 
 }

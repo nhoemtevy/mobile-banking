@@ -25,7 +25,7 @@ public class Card {
 
     private String holder;
 
-    private LocalDate issueDate;
+    private LocalDate issueAt;
 
     private LocalDate expiredAt;
 
