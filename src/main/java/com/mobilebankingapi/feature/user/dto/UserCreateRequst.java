@@ -3,6 +3,7 @@ package com.mobilebankingapi.feature.user.dto;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record UserCreateRequst(
         @NotNull
@@ -32,11 +33,14 @@ public record UserCreateRequst(
         @Size(max = 6)
         String gender,
 
-        @NotBlank
-        @Size(max = 20)
-        String studentId,
-
         @NotNull
-        LocalDate dob
+        LocalDate dob,
+
+        @Size(max = 20)
+        String studentIdCard,
+
+        List<RoleRequest> roles
+
+
 ) {
 }

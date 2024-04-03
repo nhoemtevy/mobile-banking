@@ -1,4 +1,4 @@
 package com.mobilebankingapi.feature.user.dto;
 
-public record UserDetailsRespone() {
+public record UserSnippetResponse() {
 }
