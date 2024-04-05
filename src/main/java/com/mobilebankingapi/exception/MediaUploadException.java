@@ -1,6 +1,7 @@
 package com.mobilebankingapi.exception;
 
 import com.mobilebankingapi.base.BaseError;
+import com.mobilebankingapi.base.BasedErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,22 +14,25 @@ import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
-public class ValidationException {
+public class MediaUploadException {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleValidationErrors(MethodArgumentNotValidException ex) {
+    BasedErrorResponse handleValidattionErrors(MethodArgumentNotValidException ex) {
+        BaseError baseError = new BaseError();
         List<Map<String, Object>> errors = new ArrayList<>();
 
         ex.getBindingResult().getFieldErrors()
                 .forEach(fieldError -> {
                     Map<String, Object> error = new HashMap<>();
-                    error.put("field", fieldError.getField());
-                    error.put("reason", fieldError.getDefaultMessage());
-                    errors.add(error);
+                    error.put("field",fieldError.getField());
+                    error.put("message",fieldError.getDefaultMessage());
+
+                    //errorList.add(error);
                 });
-
-        return Map.of("errors", errors);
+        baseError.setCode(HttpStatus.BAD_GATEWAY.getReasonPhrase());
+        baseError.setDescription(baseError.getDescription());
+        return new BasedErrorResponse();
     }
-
 
 }

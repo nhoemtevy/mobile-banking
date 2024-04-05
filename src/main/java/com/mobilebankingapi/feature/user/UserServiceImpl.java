@@ -1,6 +1,6 @@
 package com.mobilebankingapi.feature.user;
 
-import com.mobilebankingapi.base.BasedMessage;
+import com.mobilebankingapi.base.BaseMessage;
 import com.mobilebankingapi.domain.Role;
 import com.mobilebankingapi.domain.User;
 import com.mobilebankingapi.feature.user.dto.UserCreateRequst;
@@ -10,6 +10,7 @@ import com.mobilebankingapi.mapper.UserMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,8 @@ public class UserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
 
+    @Value("${media.base-uri}")
+    String mediaBaseUri;
     @Override
     public void createNewUser(UserCreateRequst userCreateRequst) {
 
@@ -80,7 +83,7 @@ public class UserServiceImpl implements UserService{
                                 "Role USER has not been found!"));
         roles.add(userRole);
         user.setRoles(roles);
-        System.out.println(user.toString());
+//        System.out.println(user.toString());
 
         userRepository.save(user);
 
@@ -128,7 +131,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public BasedMessage blockByUuid(String uuid) {
+    public BaseMessage blockByUuid(String uuid) {
         if (!userRepository.existsByUuid(uuid)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "User has not been found!");
@@ -136,7 +139,7 @@ public class UserServiceImpl implements UserService{
 
         userRepository.blockByUuid(uuid);
 
-        return new BasedMessage("User has been blocked");
+        return new BaseMessage("User has been blocked");
     }
 
     @Override
@@ -174,6 +177,16 @@ public class UserServiceImpl implements UserService{
         PageRequest pageRequest = PageRequest.of(page,limit);
         Page<User> users = userRepository.findAll(pageRequest);
         return users.map(userMapper::toUserResponse);
+    }
+
+    @Override
+    public String updateProfileImage(String uuid, String mediaName) {
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "User has not been found!"));
+        user.setProfileImage(mediaName);
+        userRepository.save(user);
+        return mediaBaseUri + "IMAGE" + mediaName;
     }
 
 

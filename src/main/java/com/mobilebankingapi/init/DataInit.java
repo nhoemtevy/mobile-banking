@@ -45,14 +45,13 @@ public class DataInit {
         if (accountTypeRepository.count() < 1) {
             AccountType payroll = new AccountType();
             payroll.setName("PAYROLL");
-            payroll.setName("PAYROLL");
-            payroll.setAlias("PAYROLL");
+            payroll.setAlias("payroll");
             payroll.setDeleted(false);
             payroll.setDescription("Payroll Of Account Type");
 
             AccountType saving = new AccountType();
             saving.setName("SAVING");
-            saving.setAlias("SAVING");
+            saving.setAlias("saving");
             saving.setDeleted(false);
             saving.setDescription("Saving Of Account Type");
 

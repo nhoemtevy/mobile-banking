@@ -1,6 +1,6 @@
 package com.mobilebankingapi.feature.user;
 
-import com.mobilebankingapi.base.BasedMessage;
+import com.mobilebankingapi.base.BaseMessage;
 import com.mobilebankingapi.feature.user.dto.UserCreateRequst;
 import com.mobilebankingapi.feature.user.dto.UserResponse;
 import com.mobilebankingapi.feature.user.dto.UserUpdateRequest;
@@ -15,7 +15,7 @@ public interface UserService {
 
     UserResponse findByUuid(String uuid);    Page<UserResponse> findList(int page, int limit);
 
-    BasedMessage blockByUuid(String uuid);
+    BaseMessage blockByUuid(String uuid);
 
     void deletedByUuid(String uuid);
 
@@ -24,5 +24,7 @@ public interface UserService {
 
 
     Page<UserResponse> findAllUser(int page, int limit);
+
+    String updateProfileImage(String uuid , String mediaName);
 
 }

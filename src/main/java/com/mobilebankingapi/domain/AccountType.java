@@ -27,6 +27,7 @@ public class AccountType {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "accountType")

@@ -1,8 +1,10 @@
 package com.mobilebankingapi.feature.user;
 
-import com.mobilebankingapi.base.BasedMessage;
+import com.mobilebankingapi.base.BaseMessage;
+import com.mobilebankingapi.base.BaseResponse;
 import com.mobilebankingapi.feature.user.dto.UserCreateRequst;
 import com.mobilebankingapi.feature.user.dto.UserResponse;
+import com.mobilebankingapi.feature.user.dto.UserUpdateProfileImageRequest;
 import com.mobilebankingapi.feature.user.dto.UserUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-
-//    @GetMapping
-//    Page<UserResponse> findList(
-//            @RequestParam(required = false, defaultValue = "0") int page,
-//            @RequestParam(required = false, defaultValue = "2") int limit) {
-//        return userService.findList(page, limit);
-//    }
 
     private final UserService userService;
 
@@ -46,7 +41,7 @@ public class UserController {
     }
 
     @PutMapping("/{uuid}/block")
-    BasedMessage blockByUuid(@PathVariable String uuid) {
+    BaseMessage blockByUuid(@PathVariable String uuid) {
         return userService.blockByUuid(uuid);
     }
 
@@ -71,6 +66,15 @@ public class UserController {
             @RequestParam (required = false, defaultValue = "2") int limit
             ){
         return userService.findAllUser(page, limit);
+    }
+
+    @PutMapping("/{uuid}/profile-image")
+    BaseResponse updateProfileImage(@PathVariable String uuid,
+                                       @Valid @RequestBody UserUpdateProfileImageRequest userUpdateProfileImageRequest) {
+        String newProfileImageUri = userService.updateProfileImage(uuid, userUpdateProfileImageRequest.mediaName());
+        return BaseResponse.builder()
+                .payload(newProfileImageUri)
+                .build();
     }
 
 }
