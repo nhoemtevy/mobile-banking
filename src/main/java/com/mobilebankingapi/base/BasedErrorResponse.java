@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 
-public class BasedMessage {
-    private String message;
+public class BasedErrorResponse{
+    private Error error;
 }
