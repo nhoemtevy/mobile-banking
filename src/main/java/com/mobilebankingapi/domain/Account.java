@@ -20,7 +20,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 9)
+    @Column( nullable = false, length = 9)
     private String actNo;
 
     @Column(unique = true, nullable = false, length = 100)
