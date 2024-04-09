@@ -3,14 +3,12 @@ package com.mobilebankingapi.feature.account;
 import com.mobilebankingapi.feature.account.dto.AccountCreateRequest;
 import com.mobilebankingapi.feature.account.dto.AccountRenameRequest;
 import com.mobilebankingapi.feature.account.dto.AccountResponse;
-import com.mobilebankingapi.util.BigDecimalUtil;
+import com.mobilebankingapi.feature.account.dto.AccountSetTransferRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -46,8 +44,8 @@ public class AccountController {
 
     @PutMapping("/{actNo}/transfer-account")
     AccountResponse setAccountLimitTransfer(@PathVariable String actNo,
-                                            @RequestBody BigDecimalUtil transferLimitAmount) {
-        BigDecimal amount = transferLimitAmount.getTransferLimitAmount();
-        return accountService.setAccountLimitTransfer(actNo,amount);
+                                            @RequestBody AccountSetTransferRequest accountSetTransferRequest) {
+
+        return accountService.setAccountLimitTransfer(actNo,accountSetTransferRequest);
     }
 }

@@ -7,6 +7,7 @@ import com.mobilebankingapi.domain.UserAccount;
 import com.mobilebankingapi.feature.account.dto.AccountCreateRequest;
 import com.mobilebankingapi.feature.account.dto.AccountRenameRequest;
 import com.mobilebankingapi.feature.account.dto.AccountResponse;
+import com.mobilebankingapi.feature.account.dto.AccountSetTransferRequest;
 import com.mobilebankingapi.feature.accounttype.AccountTypeRepository;
 import com.mobilebankingapi.feature.user.UserRepository;
 import com.mobilebankingapi.util.RandomUtil;
@@ -126,12 +127,15 @@ public class AccountServiceImpl implements AccountService{
         return accounts.map(accountMapper::toAccountResponse);
     }
 
+
     @Override
-    public AccountResponse setAccountLimitTransfer(String actNo, BigDecimal amount) {
+    public AccountResponse setAccountLimitTransfer(String actNo, AccountSetTransferRequest accountSetTransferRequest) {
         Account account = accountRepository.findAccountByActNo(actNo)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Account has not been fond"));
-        account.setTransferLimit(amount);
+
+
+        account.setTransferLimit(accountSetTransferRequest.setTransfer());
         account = accountRepository.save(account);
         return accountMapper.toAccountResponse(account);
     }

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record AccountResponse(
+        String actNo,
         String actName,
         String alias,
         BigDecimal balance,
