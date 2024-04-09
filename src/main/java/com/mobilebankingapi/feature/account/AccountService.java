@@ -6,6 +6,7 @@ import com.mobilebankingapi.feature.account.dto.AccountResponse;
 import com.mobilebankingapi.feature.accounttype.dto.AccountTypeResponse;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountService {
@@ -16,4 +17,5 @@ public interface AccountService {
     AccountResponse renameByActNo(String actNo, AccountRenameRequest accountRenameRequest);
     void hiddenAccount(String actNo);
     Page<AccountResponse> findList(int page, int size);
+    AccountResponse setAccountLimitTransfer(String actNo, BigDecimal amount);
 }

@@ -12,6 +12,7 @@ public record AccountResponse(
         String alias,
         BigDecimal balance,
         AccountTypeResponse accountTypeResponse,
-        UserResponse userResponse
+        UserResponse userResponse,
+        BigDecimal amount
 ) {
 }

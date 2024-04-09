@@ -1,4 +1,4 @@
-package com.mobilebankingapi.init;
+package com.mobilebankingapi.util;
 
 import java.util.Random;
 

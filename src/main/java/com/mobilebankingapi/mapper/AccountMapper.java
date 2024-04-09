@@ -24,5 +24,4 @@ public interface AccountMapper {
     @Mapping(source = "userAccountList", target = "userResponse", qualifiedByName = "mapUserResponse")
     AccountResponse toAccountResponse(Account account);
 
-
 }

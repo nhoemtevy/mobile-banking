@@ -8,9 +8,8 @@ import com.mobilebankingapi.feature.account.dto.AccountCreateRequest;
 import com.mobilebankingapi.feature.account.dto.AccountRenameRequest;
 import com.mobilebankingapi.feature.account.dto.AccountResponse;
 import com.mobilebankingapi.feature.accounttype.AccountTypeRepository;
-import com.mobilebankingapi.feature.accounttype.dto.AccountTypeResponse;
 import com.mobilebankingapi.feature.user.UserRepository;
-import com.mobilebankingapi.init.RandomUtil;
+import com.mobilebankingapi.util.RandomUtil;
 import com.mobilebankingapi.mapper.AccountMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -126,6 +124,16 @@ public class AccountServiceImpl implements AccountService{
         Page<Account> accounts = accountRepository.findAll(pageRequest);
 
         return accounts.map(accountMapper::toAccountResponse);
+    }
+
+    @Override
+    public AccountResponse setAccountLimitTransfer(String actNo, BigDecimal amount) {
+        Account account = accountRepository.findAccountByActNo(actNo)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Account has not been fond"));
+        account.setTransferLimit(amount);
+        account = accountRepository.save(account);
+        return accountMapper.toAccountResponse(account);
     }
 
 
