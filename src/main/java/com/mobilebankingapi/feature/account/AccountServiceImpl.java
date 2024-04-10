@@ -135,7 +135,7 @@ public class AccountServiceImpl implements AccountService{
                         "Account has not been fond"));
 
 
-        account.setTransferLimit(accountSetTransferRequest.setTransfer());
+        account.setTransferLimit(accountSetTransferRequest.transferLimit());
         account = accountRepository.save(account);
         return accountMapper.toAccountResponse(account);
     }

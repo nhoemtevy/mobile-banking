@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 public record AccountSetTransferRequest(
         @NotBlank(message = "Set Transfer Account Limit")
         @Size
-        BigDecimal setTransfer
+        BigDecimal transferLimit
 ) {
 }

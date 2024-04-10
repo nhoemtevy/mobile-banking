@@ -5,6 +5,7 @@ import com.mobilebankingapi.domain.User;
 import com.mobilebankingapi.domain.UserAccount;
 import com.mobilebankingapi.feature.account.dto.AccountCreateRequest;
 import com.mobilebankingapi.feature.account.dto.AccountResponse;
+import com.mobilebankingapi.feature.account.dto.AccountSnippetResponse;
 import com.mobilebankingapi.feature.accounttype.dto.AccountTypeResponse;
 import com.mobilebankingapi.feature.user.dto.UserResponse;
 import org.mapstruct.Mapper;
@@ -23,5 +24,12 @@ public interface AccountMapper {
 
     @Mapping(source = "userAccountList", target = "userResponse", qualifiedByName = "mapUserResponse")
     AccountResponse toAccountResponse(Account account);
+
+    AccountSnippetResponse toAccountSnippetResponse(Account account);
+
+    @Mapping(source = "userAccountList", target = "user",
+            qualifiedByName = "mapUserResponse"
+    )
+    List<AccountResponse> toAccountResponse(List<Account> accounts);
 
 }
