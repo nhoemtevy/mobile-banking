@@ -12,6 +12,7 @@ public class ServiceException {
     @ExceptionHandler(ResponseStatusException.class)
     ResponseEntity<?> handleServiceErrors(ResponseStatusException ex) {
 
+        
         return ResponseEntity.status(ex.getStatusCode())
                 .body(Map.of("errors", ex.getReason()));
     }
