@@ -88,15 +88,22 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserAccount> userAccountList;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    private boolean isAccountNonExpired;
+
+    boolean isCredentialsNonExpired;
+
+    private boolean isAccountNonLocked;
+
     private Boolean isBlocked; // manage block status (when there is bad action happened)
 
     private LocalDateTime createdAt;
+
 
 
 }
