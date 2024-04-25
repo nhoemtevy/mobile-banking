@@ -15,20 +15,19 @@ import java.util.List;
 @Data
 @Setter
 @Getter
-@Table(name = "role")
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(length = 50, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Authority> authorities;
 
     @Override

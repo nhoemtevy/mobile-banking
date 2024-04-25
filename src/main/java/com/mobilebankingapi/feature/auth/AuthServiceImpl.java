@@ -3,9 +3,13 @@ package com.mobilebankingapi.feature.auth;
 
 import com.mobilebankingapi.feature.auth.dto.AuthResponse;
 import com.mobilebankingapi.feature.auth.dto.LoginRequest;
+import com.mobilebankingapi.feature.auth.dto.RefreshTokenRequest;
+import com.mobilebankingapi.feature.token.TokenService;
 import com.mobilebankingapi.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -14,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -27,7 +33,15 @@ import java.util.stream.Collectors;
 public class AuthServiceImpl implements AuthService{
 
     private final DaoAuthenticationProvider daoAuthenticationProvider;
-    private final JwtEncoder jwtEncoder;
+    private final JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final TokenService tokenService;
+    private JwtEncoder refreshJwtEncoder;
+
+    @Qualifier("refreshJwtEncoder")
+    @Autowired
+    public void setRefreshJwtEncoder(JwtEncoder refreshJwtEncoder) {
+        this.refreshJwtEncoder = refreshJwtEncoder;
+    }
     @Override
     public AuthResponse login(LoginRequest loginRequest) {
 
@@ -35,38 +49,21 @@ public class AuthServiceImpl implements AuthService{
                 loginRequest.phoneNumber(),
                 loginRequest.password()
         );
-
         auth = daoAuthenticationProvider.authenticate(auth);
 
-        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
-        log.info(userDetails.getUsername());
-        log.info(userDetails.getUser().getName());
-        userDetails.getAuthorities()
-                .forEach(grantedAuthority ->
-                        System.out.println(grantedAuthority.getAuthority()));
+        return tokenService.createToken(auth);
 
-        Instant now = Instant.now();
+    }
 
-        String scope = auth.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
-
-        JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
-                .id(userDetails.getUsername())
-                .subject("Access Resource")
-                .audience(List.of("WEB", "MOBILE"))
-                .issuedAt(now)
-                .expiresAt(now.plus(5, ChronoUnit.MINUTES))
-                .issuer(userDetails.getUsername())
-                .claim("scope", scope)
-                .build();
-
-        String accessToken = jwtEncoder.encode((JwtEncoderParameters.from(jwtClaimsSet))).getTokenValue();
-
-        return new AuthResponse(
-                "Bearer",
-                accessToken,
-                ""
+    @Override
+    public AuthResponse refresh(RefreshTokenRequest refreshTokenRequest) {
+        Authentication auth = new BearerTokenAuthenticationToken(
+                refreshTokenRequest.refreshToken()
         );
+
+        auth = jwtAuthenticationProvider.authenticate(auth);
+
+        return tokenService.createToken(auth);
+
     }
 }
