@@ -23,8 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
 
         //load user from db
-        User user = userRepository.findByPhoneNumber(phoneNumber);
-               //.orElseThrow(() -> new UsernameNotFoundException("User"));
+        User user = userRepository.findByPhoneNumber(phoneNumber)
+               .orElseThrow(() -> new UsernameNotFoundException("User"));
 
         CustomUserDetails customUserDetails = new CustomUserDetails();
         customUserDetails.setUser(user);
